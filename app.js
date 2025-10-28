@@ -20,11 +20,40 @@ app.get ("/",(req,res)=>{
     res.render("index",{title:"Chess Game"});
 });
 
-io.on("connection",function(socket){
+io.on("connection",function(uniquesocket){
     console.log('connected');
 
-    socket.on("churan",function(){
-        io.emit("churan")
+
+    if(!players.white){
+        players.white= uniquesocket.id;
+        uniquesocket.emit("playerRole","w");
+    }
+    else if(!players.black){
+        uniquesocket.emit("playerRole","b");
+    }
+    else{
+        uniquesocket.emit("spectatorRole");
+    }
+
+    uniquesocket.on("disconnet",function(){
+        if(uniquesocket.id===players.white){
+            delete players.white;
+        }else if (uniquesocket.id === players.black){
+            delete players.black;
+        }
+    });
+
+    uniquesocket.on("move",(move)=>{
+        try{
+            if(chess.turn()=== 'w' && socket.id !==players.white)return;
+            if(chess.turn()=== 'b' && socket.id !==players.black)return;
+
+            const result = chess.move(move);
+            if(result){
+                currentPlayer = chess.turn();
+            }
+
+        }catch(err){}
     })
 })
 
