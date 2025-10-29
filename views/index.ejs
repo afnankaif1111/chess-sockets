@@ -1,78 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Chess Game ♟️</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <style>
-        .chessboard {
-            display: grid;
-            grid-template-columns: repeat(8, minmax(0, 1fr));
-            grid-template-rows: repeat(8, minmax(0, 1fr));
-            width: 400px;
-            height: 400px;
-            transform: rotate(0deg);
-        }
-
-        .piece.white {
-            color: white;
-            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
-        }
-
-        .piece.black {
-            color: black;
-        }
-
-        .flipped {
-            transform: rotate(180deg);
-        }
-
-        .square {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .square.light {
-            background-color: #f0d9b5;
-        }
-
-        .square.dark {
-            background-color: #b58863;
-        }
-
-        .piece {
-            font-size: 36px;
-            cursor: pointer;
-        }
-
-        .piece.draggable {
-            cursor: grab;
-        }
-
-        .dragging {
-            opacity: 0.5;
-        }
-
-        /* Rotate pieces for black player */
-        .flipped .piece {
-            transform: rotate(180deg);
-        }
-    </style>
+  <style>
     
+    .chessboard {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: repeat(8, minmax(0, 1fr));
+      width: 480px;
+      height: 480px;
+      border: 6px solid #2e2e2e;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .square {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .square.light {
+      background-color: #f0d9b5;
+    }
+
+    .square.dark {
+      background-color: #b58863;
+    }
+
+    .piece {
+      font-size: 40px;
+      cursor: grab;
+      transition: transform 0.1s ease;
+    }
+
+    .piece.white {
+      color: #fafafa;
+      filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
+    }
+
+    .piece.black {
+      color: #111;
+    }
+
+    .piece:active {
+      transform: scale(1.1);
+    }
+
+    .dragging {
+      opacity: 0.5;
+    }
+
+    .flipped {
+      transform: rotate(180deg);
+    }
+
+    .flipped .piece {
+      transform: rotate(180deg);
+    }
+
+    
+    .square.drag-over {
+      outline: 2px dashed #4ade80;
+    }
+  </style>
 </head>
-<body>
-    <div class="w-full h-screen flex items-center justify-center bg-zinc-900">
-        <div class="chessboard w-96 h-96 bg-red-800"></div>
-    </div>
 
+<body class="bg-zinc-900 text-gray-200 min-h-screen flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center gap-6">
+    
+    <h1 class="text-3xl font-bold tracking-wide text-white drop-shadow-lg">
+      ♞ Real-Time Chess Arena ♜
+    </h1>
 
+    
+    <div class="chessboard"></div>
 
-    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    
+  </div>
 
-    <script src="/js/chessgame.js"></script>
+  
+  <script
+    src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+    integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+    crossorigin="anonymous">
+  </script>
+
+  
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+    integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+
+  
+  <script src="/js/chessgame.js"></script>
 </body>
 </html>
