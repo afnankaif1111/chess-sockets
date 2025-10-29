@@ -51,9 +51,19 @@ io.on("connection",function(uniquesocket){
             const result = chess.move(move);
             if(result){
                 currentPlayer = chess.turn();
+                io.emit("move",move);
+                io.emit("boardstate",chess.fen())//board state using fen notation
+            }
+            else{
+                console.log("Invalid move : ",move);
+                uniquesocket.emit("invalidMove",move);
+
             }
 
-        }catch(err){}
+        }catch(err){
+            console.log(err);
+            uniquesocket.emit("Invalid move : ",move)
+        }
     })
 })
 
